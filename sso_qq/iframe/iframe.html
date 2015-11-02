@@ -1,0 +1,468 @@
+
+<html>
+ <head></head>
+ <body>
+  <iframe name="ptlogin_iframe" width="370" height="316" id="ptlogin_iframe" src="src = http://xui.ptlogin2.qq.com/cgi-bin/xlogin?appid=716027609&style=23&login_text=授权并登录&hide_title_bar=1&hide_border=1&target=self&s_url=http://openapi.qzone.qq.com/oauth/login_jump&pt_3rd_aid=101119675&pt_feedback_link=http://support.qq.com/write.shtml?fid=780&SSTAG=www.jikexueyuan.com.appid101119675" frameborder="0"></iframe>
+ </body>
+</html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+< script > !
+function() {
+    window.onerror = function(n, o, e) {
+        var t = "https:" == location.protocol ? "https://ssl.qq.com/ptlogin/cgi-bin/ptlogin_report?": "http://log.wtlogin.qq.com/cgi-bin/ptlogin_report?",
+        _ = document.createElement("img"),
+        i = encodeURIComponent(n + "|_|" + o + "|_|" + e + "|_|" + window.navigator.userAgent);
+        _.src = t + "id=195279&msg=" + i + "&v=" + Math.random()
+    }
+} ();
+var g_cdn_js_fail = !1,
+pt = {};
+pt.str = {
+    no_uin: "您还没有输入帐号！",
+    no_pwd: "您还没有输入密码！",
+    no_vcode: "您还没有输入验证码！",
+    inv_uin: "请输入正确的帐号！",
+    inv_vcode: "请输入完整的验证码！",
+    qlogin_expire: "您所选择号码对应的QQ已经失效，请检查该号码对应的QQ是否已经被关闭。",
+    other_login: "帐号登录",
+    h_pt_login: "帐号密码登录",
+    otherqq_login: "QQ帐号密码登录"
+},
+pt.ptui = {
+    s_url: "http://Fopenapi.qzone.qq.com\x2Foauth\x2Flogin_jump",
+    proxy_url: "",
+    jumpname: encodeURIComponent(""),
+    mibao_css: encodeURIComponent(""),
+    defaultUin: "",
+    lockuin: parseInt("0"),
+    href: "http://Fxui.ptlogin2.qq.com\x2Fcgi-bin\x2Fxlogin\x3Fappid\x3D716027609\x26style\x3D23\x26login_text\x3D\x25E6\x258E\x2588\x25E6\x259D\x2583\x25E5\x25B9\x25B6\x25E7\x2599\x25BB\x25E5\x25BD\x2595\x26hide_title_bar\x3D1\x26hide_border\x3D1\x26target\x3Dself\x26s_url\x3Dhttp\x253A\x252F\x252Fopenapi.qzone.qq.com\x252Foauth\x252Flogin_jump\x26pt_3rd_aid\x3D101119675\x26pt_feedback_link\x3Dhttp\x253A\x252F\x252Fsupport.qq.com\x252Fwrite.shtml\x253Ffid\x253D780\x2526SSTAG\x253Dwww.jikexueyuan.com.appid101119675",
+    login_sig: "",
+    clientip: "",
+    serverip: "",
+    version: "201203081004",
+    ptui_version: encodeURIComponent("10138"),
+    isHttps: !1,
+    cssPath: "http://imgcache.qq.com/ptlogin/v4/style/33",
+    domain: encodeURIComponent("qq.com"),
+    fromStyle: parseInt(""),
+    pt_3rd_aid: encodeURIComponent("101119675"),
+    appid: encodeURIComponent("716027609"),
+    lang: encodeURIComponent("2052"),
+    style: encodeURIComponent("33"),
+    low_login: encodeURIComponent("0"),
+    daid: encodeURIComponent(""),
+    regmaster: encodeURIComponent(""),
+    enable_qlogin: "1",
+    noAuth: "0",
+    target: isNaN(parseInt("0")) ? {
+        _top: 1,
+        _self: 0,
+        _parent: 2
+    } ["0"] : parseInt("0"),
+    csimc: encodeURIComponent("0"),
+    csnum: encodeURIComponent("0"),
+    authid: encodeURIComponent("0"),
+    auth_mode: encodeURIComponent("0"),
+    pt_qzone_sig: "0",
+    pt_light: "0",
+    pt_vcode_v1: "1",
+    pt_ver_md5: "000D2B427B803B6B72C35158E9844F11FC39DA61951835578B685C1B",
+    gzipEnable: "1"
+}; < /script>
+  <script src="http://imgcache.qq.com/ptlogin/ver/10138/js/c_login_2.js?max_age=604800&ptui_identifier=000DA5EFF22451452BBF3413A0AC033316B4C77F1D4E24453F3308" type="text/javascript" charset="utf-8"></script>
+  <script src="http://localhost.ptlogin2.qq.com:4300/pt_get_uins?callback=ptui_getuins_CB&r=0.7776790681341608&pt_local_tk=1688036905"></script>
+  <script src="http://localhost.ptlogin2.qq.com:4302/pt_get_uins?callback=ptui_getuins_CB&r=0.7776790681341608&pt_local_tk=1688036905"></script>
+  <script src="http://localhost.ptlogin2.qq.com:4304/pt_get_uins?callback=ptui_getuins_CB&r=0.7776790681341608&pt_local_tk=1688036905"></script>
+  <script src="http://localhost.ptlogin2.qq.com:4306/pt_get_uins?callback=ptui_getuins_CB&r=0.7776790681341608&pt_local_tk=1688036905"></script>
+  <script src="http://localhost.ptlogin2.qq.com:4308/pt_get_uins?callback=ptui_getuins_CB&r=0.7776790681341608&pt_local_tk=1688036905"></script>
+ </head>
+ <body>
+  <div class="login" id="login">
+   <div class="header" id="header">
+    <div class="switch" id="switch">
+     <a tabindex="7" class="switch_btn" id="switcher_qlogin" hidefocus="true" href="javascript:void(0);">快速登录</a> 
+     <a tabindex="8" class="switch_btn_focus" id="switcher_plogin" hidefocus="true" href="javascript:void(0);">帐号密码登录</a>
+     <div class="switch_bottom" id="switch_bottom" style="left: 154px; width: 96px; position: absolute;"></div>
+    </div>
+   </div>
+   <div class="loginTips">
+    <div class="error_tips" id="error_tips" style="display: none;">
+     <span class="error_logo" id="error_logo"></span> 
+     <span class="err_m" id="err_m"></span>
+    </div>
+    <div class="loading_tips" id="loading_tips">
+     <span id="loading_wording">登录中</span> 
+     <img align="absmiddle" id="loading_img" src="http://imgcache.qq.com/ptlogin/v4/style/0/images/load.gif" place_src="http://imgcache.qq.com/ptlogin/v4/style/0/images/load.gif" />
+    </div>
+   </div>
+   <div class="qlogin" id="qlogin" style="display: none;">
+    <div class="qlogin_tips" id="qlogin_tips" style="display: none;">
+     请用
+     <a class="qr_short_tips" href="http://im.qq.com/mobileqq/#from=login" target="_blank">QQ手机版</a>扫描二维码，或点击头像授权并登录
+    </div>
+    <a title="上一页" class="prePage" id="prePage" href="javascript:void(0);"><span tabindex="6" class="preRow"></span></a>
+    <div class="qlogin_show" id="qlogin_show" style="top: 25px;">
+     <div class="qlogin_list" id="qlogin_list" style="width: 304px;">
+      <span class="qr_0" id="qr_area"><span class="qr_safe_tips">安全登录，防止被盗</span> <img class="qrImg" id="qrlogin_img" style="left: 12px; position: absolute;" alt="" src="http://ptlogin2.qq.com/ptqrshow?appid=716027609&e=2&l=M&s=3&d=72&v=4&t=0.736323827263837" /> <span class="qr_app_name"><span class="qr_safe_login">安全登录</span> <a class="qr_info_link" hidefocus="true" draggable="false" href="http://im.qq.com/mobileqq/#from=login" target="_blank">使用QQ手机版扫描二维码</a></span> <span class="qrlogin_img_out" onmouseover="pt.plogin.showQrTips()" onmouseout="pt.plogin.hideQrTips()"></span> <span class="qr_invalid" id="qr_invalid" style="display: none;" onclick="pt.plogin.begin_qrlogin()"><span class="qr_mengban" id="qr_mengban"></span> <span class="qr_invalid_tips" id="qr_invalid_tips">二维码失效<br />请点击刷新</span></span></span>
+     </div>
+    </div>
+    <a title="下一页" class="nextPage" id="nextPage" href="javascript:void(0);"><span tabindex="7" class="nextRow"></span></a>
+   </div>
+   <div class="web_qr_login" id="web_qr_login" style="height: 265px; display: block;">
+    <div class="web_qr_login_show" id="web_qr_login_show">
+     <div class="web_login" id="web_login">
+      <div class="tips" id="tips">
+       <noscript id="noscript_area">
+        &lt;span class=&quot;noscript&quot;&gt; 您的浏览器脚本被禁用了， &lt;a href=&quot;/assistant/noscript.html&quot; target=&quot;_blank&quot; style=&quot;color: #29B1F1&quot;&gt;查看启用方法&lt;/a&gt; &lt;/span&gt; &lt;img id=&quot;noscript_img&quot; style=&quot;width:1px;height:1px;&quot; src=&quot;https://ui.ptlogin2.qq.com/cgi-bin/report?id=301240&quot; /&gt;
+       </noscript>
+       <div class="operate_tips" id="operate_tips">
+        <span class="operate_content">手机号码也可登录哦， <a class="tips_link" id="bind_account" href="javascript:void(0);">登录个人中心绑定</a></span> 
+        <span class="down_row"></span>
+       </div>
+      </div>
+      <div class="login_form">
+       <form name="loginform" id="loginform" style="margin:0" action="" method="post" target="_self" autocomplete="off">
+        <div class="uinArea" id="uinArea">
+         <label class="input_tips" id="uin_tips" style="display: block;" for="u">支持QQ号/邮箱/手机号登录</label>
+         <div class="inputOuter">
+          <input name="u" tabindex="1" class="inputstyle" id="u" type="text" value="" /> 
+          <a class="uin_del" id="uin_del" href="javascript:void(0);"></a>
+         </div>
+         <ul class="email_list" id="email_list" style="display: none;"></ul>
+        </div>
+        <div class="pwdArea" id="pwdArea">
+         <label class="input_tips" id="pwd_tips" for="p">密码</label>
+         <div class="inputOuter">
+          <input name="p" tabindex="2" class="inputstyle password" id="p" type="password" maxlength="16" value="" />
+         </div>
+         <div class="lock_tips" id="caps_lock_tips">
+          <span class="lock_tips_row"></span> 
+          <span>大写锁定已打开</span>
+         </div>
+        </div>
+        <div class="verifyArea" id="verifyArea">
+         <div class="verifyinputArea" id="verifyinputArea">
+          <label class="input_tips" id="vc_tips" for="verifycode">验证码</label>
+          <div class="inputOuter">
+           <input name="verifycode" tabindex="3" class="inputstyle verifycode" id="verifycode" type="text" value="" />
+          </div>
+         </div>
+         <div class="verifyimgArea" id="verifyimgArea">
+          <img title="看不清，换一张" class="verifyimg" id="verifyimg" /> 
+          <a tabindex="4" class="verifyimg_tips" href="javascript:void(0);">看不清，换一张</a>
+         </div>
+        </div>
+        <div class="submit">
+         <a class="login_button" hidefocus="true" href="javascript:void(0);"><input tabindex="6" class="btn" id="login_button" type="submit" value="授权并登录" /></a> 
+        </div>
+       </form>
+      </div>
+      <div class="bottom" id="bottom_web" style="display: block;">
+       <a class="link" id="forgetpwd" href="http://ptlogin2.qq.com/ptui_forgetpwd" target="_blank">忘了密码？</a> 
+       <span class="dotted">|</span> 
+       <a class="link" href="http://ptlogin2.qq.com/j_newreg_url" target="_blank">注册新帐号</a> 
+       <span class="dotted">|</span> 
+       <a class="link" id="feedback_web" href="http://support.qq.com/write.shtml?fid=780&SSTAG=www.jikexueyuan.com.appid101119675" target="_blank">意见反馈</a> 
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="qrlogin_step2" id="qrlogin_step2">
+    <div class="step2_outer">
+     <div class="qr_h3">
+      扫描成功，请在手机上确认是否授权登录
+     </div>
+     <div class="goBack">
+      使用其它方式登录，请 
+      <a tabindex="14" id="goBack" href="javascript:void(0);">返回</a>
+     </div>
+    </div>
+   </div>
+   <div class="qr_tips" id="qr_tips" style="display: none;">
+    <div id="qr_tips_menban"></div>
+    <div class="qr_tips_pic qr_tips_pic_chs" id="qr_tips_pic" style="filter: none; opacity: 0;"></div>
+   </div>
+   <div class="bottom hide" id="bottom_qlogin" style="display: none;"> 
+    <a class="link vip_link hide" id="vip_link2" href="javascript:void(0);" target="_blank">开通QQ会员</a> 
+    <span class="dotted hide" id="vip_dot">|</span> 
+    <a class="link" href="http://ptlogin2.qq.com/j_newreg_url" target="_blank">注册新帐号</a> 
+    <span class="dotted">|</span> 
+    <a class="link" id="feedback_qlogin" href="http://support.qq.com/write.shtml?fid=780&SSTAG=www.jikexueyuan.com.appid101119675" target="_blank">意见反馈</a> 
+    <span class="dotted" style="display: none;">|</span>
+   </div>
+   <div class="authLogin" id="authLogin">
+    <div class="authHeader" id="authHeader">
+     <div class="logo"></div>
+     <span class="title">腾讯业务</span>
+    </div>
+    <div class="authTips"></div>
+    <div class="authWording">
+     <span><span>点击头像，确认帐号登录</span> <span>腾讯业务</span></span>
+    </div>
+    <div class="authInfo">
+     <a tabindex="1" class="face" id="auth_area" hidefocus="true" draggable="false" href="javascript:void(0);"><img id="auth_face" /> <span id="auth_mengban"></span> <span class="uin" id="auth_uin"></span> <span class="img_out_focus"></span> <span class="nick" id="auth_nick"></span></a>
+    </div>
+    <div class="cancleAuthOuter" id="cancleAuthOuter">
+     <a class="cancleAuth" id="cancleAuth">使用其他帐号</a>
+    </div>
+    <div class="bottom"> 
+    </div>
+   </div>
+   <div class="newVcodeArea" id="newVcodeArea"></div>
+  </div>
+  <div class="hide" id="proxy"></div>
+< script >
+function cleanCache(e) {
+    var t = document.createElement("iframe");
+    3 == e.split("#").length && (e = e.substring(0, e.lastIndexOf("#"))),
+    t.src = e,
+    t.style.display = "none",
+    document.body.appendChild(t)
+}
+function loadScript(e, t, n) {
+    var o = document.createElement("script");
+    o.type = "text/javascript",
+    o.charset = "utf-8",
+    o.onload = o.onerror = o.onreadystatechange = function() {
+        return window[n] ? void(loadJs.onloadTime = +new Date) : void(this.readyState && ("loaded" !== this.readyState && "complete" !== this.readyState || window[n]) || (t && t(), o.onerror = o.onreadystatechange = null))
+    },
+    o.src = e,
+    document.getElementsByTagName("head")[0].appendChild(o)
+}
+function ptuiV(e) {
+    e != window.pt.ptui.ptui_version && cleanCache("/clearcache.html#" + location.href)
+}
+function checkVersion() {
+    var e = document.createElement("script");
+    e.src = "/ptui_ver.js?v=" + Math.random() + "&ptui_identifier=" + pt.ptui.pt_ver_md5,
+    document.body.appendChild(e)
+}
+function loadJs() {
+    1 != loadJs.hasLoad && (loadJs.hasLoad = !0, loadScript("http://imgcache.qq.com/ptlogin/ver/10138/js/c_login_2.js?max_age=604800&ptui_identifier=000DA5EFF22451452BBF3413A0AC033316B4C77F1D4E24453F3308",
+    function() {
+        window.g_cdn_js_fail = !0;
+        var e = new Image;
+        e.src = location.protocol + "//ui.ptlogin2.qq.com/cgi-bin/report?id=242325&union=256043";
+        var t = "../js/" + pt.ptui.ptui_version + "/c_login_2.js?max_age=604800&ptui_identifier=000DA5EFF22451452BBF3413A0AC033316B4C77F1D4E24453F3308";
+        loadScript(t,
+        function() {
+            var t = document.getElementById("login_button");
+            t && (t.disabled = !0),
+            e.src = location.protocol + "//ui.ptlogin2.qq.com/cgi-bin/report?id=280504"
+        },
+        "ptuiCB")
+    },
+    "ptuiCB"), ready())
+}
+function ready() {
+    window.setTimeout(checkVersion, 1500)
+}
+document.addEventListener && document.addEventListener("DOMContentLoaded", loadJs),
+window.onload = loadJs,
+window.setTimeout(loadJs, 5000); 
+ < /script>
+
+ <script src="/ptui_ver.js?v=0.6794773882470826&ptui_identifier=000D2B427B803B6B72C35158E9844F11FC39DA61951835578B685C1B"></script>
+ </body>
+</html>
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <script>
+        document.domain = 'qq.com';
+        if(parent.agree){
+            parent.agree()
+        }else{
+            parent.isAgreed = true;
+        }
+    </script>
+</head>
+<body>
+</body>
+</html>
+<!DOCTYPE html>
+
+<html lang="zh-cn">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1" />
+	<!-- @fragment_top Start-->
+<meta charset="UTF-8">
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>QQ帐号安全登录</title>
+<meta name="keywords" content="QQ互联、QQ登录、安全登录、网站接入、腾讯开放平台">
+<meta name="description" content="接入QQ互联，可实现与腾讯各项服务的无缝连接，安全帐号登录体系，用户动态同步腾讯各社交平台，调用腾讯公司各业务服务。">
+<meta name="copyright" content="Tencent" >
+<meta name="author" content="rtx://tencent/sng/yuanyan" >
+<link rel="Shortcut Icon" href="http://qzonestyle.gtimg.cn/qzone/openapi/favicon.ico?t=20130219" type="image/x-icon">
+<link rel="icon" href="http://qzonestyle.gtimg.cn/qzone/openapi/favicon.ico?t=20130219" type="image/x-icon">
+<link href="http://qzonestyle.gtimg.cn/open/connect/widget/pc/login/qlogin_v2.min.css?max_age=2592000&v=20140818" rel="stylesheet">
+<script type="text/javascript">
+    window.__start = +new Date();
+
+    document.domain = 'qq.com';
+    var _speedTiming = [+new Date];
+    (function error(monitorId){
+        var BID = 130;
+        var errorTransport = null;
+        var monitorTransport = null;
+        window.onerror = function(errorMsg, url, lineNumber) {
+            var bid = 'bid=' + BID;
+            var mid = '';
+            var msg = 'msg=' + encodeURIComponent([errorMsg, url, lineNumber, navigator.userAgent].join("|_|"));
+            var src = 'http://badjs.qq.com/cgi-bin/js_report?'+ [bid,mid,msg].join("&");
+            errorTransport = new Image;
+            errorTransport.onerror = errorTransport.onload = function(){
+                errorTransport = errorTransport.onerror = errorTransport.onload = null ;
+            };
+            errorTransport.src = src;
+            monitorTransport = new Image;
+            monitorTransport.onerror = monitorTransport.onload = function(){
+                monitorTransport = monitorTransport.onerror = monitorTransport.onload = null ;
+            };
+            monitorTransport.src = "http://cgi.connect.qq.com/report/report_vm?monitors=" +"["+monitorId+"]";
+        };
+    })(302299);
+</script>
+<!-- @fragment_top End -->
+</head>
+<body>
+<!-- @header Start-->
+<div class="lay_top">
+    <div class="lay_top_inner">
+        <h1 class="logo text_hide">QQ登录</h1>
+        <div class="lat_top_other">
+            <a href="http://connect.qq.com/intro/login" target="_blank" title="什么是QQ登录"><i class="icon_help_white"></i>QQ登录</a>
+            <span class="line">|</span>
+            <a href="http://connect.qq.com/toc/auth_manager?from=auth" id="auth_manager_link" target="_blank" title="登录授权管理">授权管理</a>
+            <span class="line">|</span>
+            <a href="http://connect.qq.com/manage" target="_blank" title="申请接入">申请接入</a>
+        </div>
+    </div>
+</div>
+<!-- @header End -->
+<div id="combine_page">
+  <div class="page_login combine_page_children float_left border_right">
+    <div class="lay_login_form">
+
+      <div class="tips">
+        <div class="loading_tips vi_hide">
+          <span>登录中</span>
+          <img src="http://imgcache.qq.com/ptlogin/v4/style/0/images/load.gif" align="absmiddle">
+        </div>
+        <div class="wording_tips">
+          <span>检测到您已登录QQ帐号，点击头像授权并登录</span>
+        </div>
+      </div>
+      <div class="qlogin_show">
+        <a href="javascript:Q.agree();" class="face">
+		<img alt="LittleFat" id="face" src="http://imgcache.qq.com/ptlogin/v4/style/0/images/1.gif"/>
+<script type="text/javascript">
+  window.getUin = window.getUin || function() { return parseInt((document.cookie.match(/(?:^|;\s*)uin=o0*(\d+)/)||['','0'])[1], 10); };
+qqconect = {
+getface:function(data){
+  try{
+document.getElementById("face").src = data[getUin()];
+  }catch(e){}
+	}
+};
+(function(){
+var script = document.createElement('script');
+script.src = "http://openmobile.qq.com/getface?appid=716027609&imgtype=3&encrytype=0&devtype=0&keytype=0&uin=" + getUin();
+ document.body.appendChild(script);
+ })();
+	        </script>
+          <span class="img_out_focus"></span>
+          <span class="nick">LittleFat</span>
+
+        </a>
+      </div>
+      <div class="wording_tips wording_timeout hide" style="display:none;">
+        <span><span class="timeout">5</span>秒后自动登录</span>
+      </div>
+      <div class="wording_tips wording_ch">
+        <a class="ch_uin" href="javascript:Q.logout();"></a>
+      </div>
+
+    </div>
+  </div>
+  <div class="page_accredit combine_page_children float_left">
+    <div class="lay_main" id="lay_main">
+      <div class="lay_accredit_con">
+        <p class="cnt_wording"></p>
+        <p class="app_site_wording"><a class="accredit_site" id="accredit_site_link" href="http://www.jikexueyuan.com" target="_blank">极客学院</a>将获得以下权限：</p>
+        <div class="accredit_info" id="accredit_info">
+          <ul class="accredit_info_op">
+            <li class="select_all_li">
+              <input type="checkbox" id="select_all" class="checkbox oauth_checkbox_all" hidefocus="true" checked="checked">
+              <label class="oauth_item_title" for="select_all">全选</label>
+            </li>
+
+
+
+
+
+
+
+
+
+
+
+            <li>
+              <input name="api_choose" hidefocus="true" type="checkbox" class="checkbox oauth_checkbox" id="item_80901010" value="80901010" title="默认授权 不可更改" checked disabled />
+              <label  for="item_80901010" class="oauth_item_title">获得您的昵称、头像、性别</label>
+            </li>
+
+          </ul>
+        </div>
+        <div class="oauth_tips_div">
+          <p class="oauth_tips">授权后表明你已同意 <a href="http://connect.qq.com/agreement_chs" target="_blank">QQ登录服务协议</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    _speedTiming.push(+new Date);
+    var Q = {};
+    Q.authsCount = 1;
+    Q.isNeedLogin = false;
+    Q.crtDomain = 'http://www.jikexueyuan.com';
+    Q.agree = function(){
+        window.isAgreed = true;
+    };
+    Q.logout = function(){
+        window.isLogouted = true;
+    };
+
+
+    function ptlogin2_onResize(w, h) {
+    	var f = document.getElementById('ptlogin_iframe');
+    	f.width = w;
+    	f.height = h;
+    }
+    if (!window.JSON) {
+    	document.write('<script type="text/javascript" src="http://qzonestyle.gtimg.cn/open/operate/mlib/widget/json-for-ie.js"><\/script>');
+    }
+</script>
+
+<!--@fragment_bottom Start-->
+<script src="http://qzonestyle.gtimg.cn/c/=/open/connect/widget/pc/login/pt_adapt.js,qlogin_v2.js?v=20140527" charset="UTF-8"></script>
+<script>
+    document.write('<script src="http://tajs.qq.com/stats?sId=36511985" charset="UTF-8"><\/script>');
+</script>
+<!--@fragment_bottom End -->
+
+<script>clearInterval(agreeInterval);</script>
+
+</body>
+</html>

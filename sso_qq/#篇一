@@ -1,0 +1,228 @@
+# 引子
+
+最近偶尔在极客学院看一会教程视频，主要是扩展视野, 感觉有的视频教程的质量还是不错的，至少能够把人带入门。
+
+然而，高质量视频要盈利，学院针对*非年度会员*仅提供第一章节的试看，就是想诱惑你，注册，消费。
+
+近期学院有活动，VIP试用可以通过邀请方式来续期，会员A邀请好友B，B通过链接注册成功后，A和B都同时会增加一个月的会员。
+
+就是这里，会员不是关键，关键是有相对长一点的时间，可以收集各类教程视频，是不是可以整一个这样的程序：
+
+> 自动登陆学院，爬取分类教程页面，对页面分析出视频地址，然后分别存储视频到本地？
+
+# 初步分析
+
+## 登录认证
+
+学院的登录认证支持两种，一种使用通过手机注册验证成为学院会员；另一种第三方认证(支持QQ,微博等)，通过第三方认证登录后，自动成为会员。
+
+在这里，暂时实现使用第三方认证登录方式，后面如有需要再考虑使用学院账号登录。
+
+## 页面分析
+
+通过F12，看到学院播放视频使用了`video-js`控件，如果在支持HTML5的浏览器中，在video块中是可以看到视频源`source`的地址，这个后面再细作分析。
+
+# 详细过程
+
+##  获得认证码
+
+抓包分析过程，用到了fiddler和浏览器的开发者工具，用于分析使用浏览器登录过程都做了什么操作
+
+模拟网页请求主要使用`python`，引用库： requests, base64, hashlib, rsa等
+
+### 从'QQ登录'开始
+
+点击‘QQ登录’按钮后，抓包分析请求和回应:
+
+
+
+
+
+
+点击"QQ登录"
+
+```
+
+<---请求
+
+GET /connect/qq HTTP/1.1\r\n
+
+Host: passport.jikexueyuan.com\r\n
+
+Referer: http://www.jikexueyuan.com/\r\n
+
+--->回应
+
+HTTP/1.1 302 Moved Temporarily\r\n
+
+Location: https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101119675&redirect_uri=http://passport.jikexueyuan.com/connect/success?t=qq&state=19325e260ec40f525abcfa2545b0c9a4&scope=get_user_info\r\n
+
+```
+
+这里有一个HTTP 302跳转至`https://graph.qq.com/oauth2.0/authorize`，用于获取'Authorization Code'(请参考`http://open.qq.com/`说明)
+
+腾讯的认证使用了OAUTH 2.0的server-side模式，获取认证码的接口定义如下：
+
+>response_type  必须  授权类型，此值固定为“code”。
+
+>client_id  必须  申请QQ登录成功后，分配给应用的appid。
+
+>redirect_uri  必须  成功授权后的回调地址，必须是注册appid时填写的主域名下的地址，建议设置为网站首页或网站的用户中心。注意需要将url进行URLEncode。
+
+>state  必须  client端的状态值。用于第三方应用防止CSRF攻击，成功授权后回调时会原样带回。请务必严格按照流程检查用户与state参数状态的绑定。
+
+fiddler抓日志看的话，可以看到，就是学院的通行证使用QQ登录模块，向腾讯请求认证，主要包含cliet_id和state，redirect_uri为本网站。
+
+
+
+
+然后我们接着看，还可以看到，腾讯graph.qq.com/oauth2.0/authorize模块会会引导至此页面http://openapi.qzone.qq.com：
+
+
+
+
+
+
+跳转后的登录验证页面
+
+```
+
+<---
+
+GET /oauth/show?which=ConfirmPage&display=pc&response_type=code&client_id=101119675&redirect_uri=http://passport.jikexueyuan.com/connect/success?t=qq&state=19325e260ec40f525abcfa2545b0c9a4&scope=get_user_info HTTP/1.1\r\n
+
+Host: openapi.qzone.qq.com\r\n
+
+Referer: http://www.jikexueyuan.com/\r\n
+
+--->
+
+HTTP/1.1 200 OK\r\n
+
+```
+
+   如果是浏览器，会继续请求下载登录模块，腾讯这里使用IFrame显示：
+
+
+
+
+
+
+F12查看
+
+
+
+html
+
+  ```
+
+
+<---
+
+GET /cgi-bin/xlogin/appid=716027609&style=23&login_text=授权并登录&hide_title_bar=1&hide_border=1&target=self&s_url=http://openapi.qzone.qq.com/oauth/login_jump&pt_3rd_aid=101119675&pt_feedback_link=http://support.qq.com/write.shtml?fid=780&SSTAG=www.jikexueyuan.com.appid101119675 HTTP/1.1\r\n
+
+Host: xui.ptlogin2.qq.com\r\n
+
+Referer: http://www.jikexueyuan.com/\r\n
+
+--->
+
+HTTP/1.1 200 OK\r\n
+
+```
+
+    这里就出现了登录按钮，当然也有扫码登录，这里我只分析了无验证登录。我们继续分析，输入QQ账号和密码然后点击“授权并登录”。
+
+    浏览器会自动登陆，并且导向到学院主页，我们看一下fiddler都抓到了什么：
+
+   1. 校验，返回是否有效登录，并且返回是否需要验证码
+
+   2. 登录，这里就是关键的提交登录代码
+
+   3. 登录跳转
+
+   4. 上报，一个是mstats_report,一个是report_vm
+
+   5. 最后是请求授权码，如果有返回值，无论成功与否，腾讯鉴权平台根据redirect_url自动跳转
+
+   这个步骤有点多，但是3，4步是否必要需要验证(我是实现了)。还是继续分析HTTP交互过程。
+
+  1. 请求校验，返回是否有效登录，并且返回是否需要验证码：
+
+
+```
+
+<---请求
+
+method: GET
+
+host: check.ptlogin2.qq.com
+
+Param:
+
+GET /check?regmaster=&pt_tea=1&pt_vcode=1&uin=909066038&appid=716027609&js_ver=10138&js_type=1&login_sig=6*d0PfHlaCk9wcqRt1diUu94fNStHN*zaUujdam*-Y9bAegZRbdjYmphbCgVn*B8&u1=http://openapi.qzone.qq.com/oauth/login_jump
+
+
+--->回应
+
+JSON:
+
+ptui_checkVC('0','!OVV','\x00\x00\x00\x00\x36\x2f\x3f\x36','95acfe9e4e59152feb350ef9065c844acb6881fc7c4915fc96ce9bc91a05b75b0e1b66838644b89cfdf95f4e17b1f657fd43b304d390b2b4','0');
+
+```
+
+这个处理过程请求的参数中，login_sig是从cookies取得，其他参数没有特殊的，返回值第一个标识是否需要校验码，'0'标识不需要，第二个为校验码，登录时需要使用。第三个为转换后的账号，第四个为pt_verifysession_v1可以从cookies中取得，登录时使用。
+
+  2. 登录，这里就是关键的提交登录代码
+
+```
+
+<---请求
+
+
+GET /login?u=909066038&verifycode=!OVV&pt_vcode_v1=0&pt_verifysession_v1=95acfe9e4e59152feb350ef9065c844acb6881fc7c4915fc96ce9bc91a05b75b0e1b66838644b89cfdf95f4e17b1f657fd43b304d390b2b4&p=YNMEEekeNoSmg9XjMRICahp6OF8iPOYcfytn7Yu
+
+host: ptlogin2.qq.com
+
+--->回应
+
+
+JSON:
+
+ptuiCB('0','0','http://openapi.qzone.qq.com/oauth/login_jump','0','\347\231\273\345\275\225\346\210\220\345\212\237\357\274\201', 'Yo\/jyyo');
+
+```
+
+  登录这里有个参数需要注意，就是密码，p为加密后的密码，腾讯的加密方法可以参考c_login_2.js实现。
+
+  3.登录跳转，请求了http://openapi.qzone.qq.com/oauth/login_jump，不用分析
+
+  4.上报，一个是mstats_report,一个是report_vm, 不用分析
+
+  5. 最后是请求授权码，如果有返回值，无论成功与否，腾讯鉴权平台根据redirect_url自动跳转
+
+```
+
+<---请求
+
+Post： 注意是post
+
+host: https://graph.qq.com/oauth2.0/authorize
+
+
+
+
+--->回应
+
+
+  参考下表
+
+
+
+
+请求授权码参数
+
+```
+
+   至此，以我跳跃的思路，描述完从登录到获取鉴权码的过程，下一篇进行编码。
+

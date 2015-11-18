@@ -46,7 +46,7 @@ class QQ:
 		self.pwd = pwd
 		self.session = requests.Session()
 
-	def fetch(self, url, data=None, **kw):
+	def fetch(self, url, data=None, cookies=None, **kw):
 		if data is None:
 			func = self.session.get
 		else:
@@ -64,6 +64,11 @@ class QQ:
 			func = self.session.get
 		return func(url, **kw)
 	def loginex(self):
+		#http://passport.jikexueyuan.com/connect/qq
+		response = self.fetch(self.jkurl)
+		g = response.text
+		print g
+
 		#http://passport.jikexueyuan.com/connect/qq
 		response = self.fetch(self.jkqqurl)
 		self.state = re.findall('&state=(.*?)\&', response.url)[0]
@@ -173,7 +178,7 @@ class QQ:
             'openapi': '80901010',
             'g_tk': token,
             'auth_time': int(time.time()),
-            'ui': '556F791F-682E-47B7-BC66-CE179327DB04',#'DE9C804E-F36C-4680-ABD0-03895211E761',
+            'ui': 'DE9C804E-F36C-4680-ABD0-03895211E761',#'556F791F-682E-47B7-BC66-CE179327DB04',
 		}
 		response = self.fetch(self.authurl, data = data)
 		g = response.text
@@ -181,19 +186,21 @@ class QQ:
 
 
 		#process video
-		self.session.headers.update({'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240'})
-		g = self.fetch('http://www.jikexueyuan.com').text
-		print g
+		#self.session.headers.update({'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240'})
+		#g = self.fetch('http://www.jikexueyuan.com').text
+		#print g
 
-		self.session.headers.update({'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240'})
-		g = self.fetch('http://www.jikexueyuan.com/course/2185_1.html?ss=1').text
-		print g
+		#self.session.headers.update({'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240'})
+		#g = self.fetch('http://www.jikexueyuan.com/course/2185_1.html?ss=1').text
+		#print g
+
 		#with open('1.html', 'w+') as fp:
 		#	fp.write(g)
 
-		self.session.headers.update({'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240'})
-		g = self.fetch('http://www.jikexueyuan.com/course/2185_2.html?ss=1').text
-		print g
+		#self.session.headers.update({'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240'})
+		#g = self.fetch('http://www.jikexueyuan.com/course/2185_2.html?ss=1').text
+		#print g
+
 		#with open('2.html', 'w+') as fp:
 		#	fp.write(g)
 		#print len(g)

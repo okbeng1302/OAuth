@@ -17,8 +17,7 @@ class CoverSpider(scrapy.Spider):
 		# cover of the magazine and yield a request to grab the cove
 		# data and image
 		for href in response.xpath("//a[contains(., 'Large Cover')]"):
-			yield scrapy.Request(href.xpath("@href").extract_first(),
-				self.parse_covers)
+			yield scrapy.Request(href.xpath("@href").extract_first(),self.parse_covers)
 
 		# extract the 'Next' link from the pagination, load it, and
 		# parse it

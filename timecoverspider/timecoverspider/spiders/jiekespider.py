@@ -23,7 +23,7 @@ class JikeSpider(scrapy.Spider):
 	STEP = 'INIT'
 	is_logined = 0
 	user = 909066038
-	pwd = 'vlirqin'
+	pwd = 'woailiyao-521'
 
 	#BASE INFO
 	appid=716027609
@@ -167,7 +167,8 @@ class JikeSpider(scrapy.Spider):
 			#http://openapi.qzone.qq.com/oauth/login_jump
 			yield  scrapy.Request(self.loginjumpurl, self.parse, meta = {'dont_merge_cookies': True, 'cookie_jar': self.cookieJar})
 			#self.cookieJar.add_cookie_header(request) # apply Set-Cookie ourselves
-			self.STEP = 'APPSUPPORT'
+			#self.STEP = 'APPSUPPORT'
+			self.STEP = 'AUTH'
 
 		elif self.STEP == 'APPSUPPORT':
 			self.cookieJar = response.meta.setdefault('cookie_jar', CookieJar())
@@ -239,7 +240,7 @@ class JikeSpider(scrapy.Spider):
 				'skey': self.cookieJar._cookies['.qq.com']['/']['skey'].value,
 			}
 
-			yield  scrapy.FormRequest(self.authurl, callback=self.parse, method='POST', formdata=data, cookies=cookies)
+			yield  scrapy.FormRequest(self.authurl, meta = {'dont_redirect': True,'handle_httpstatus_list': [302]}, callback=self.parse, method='POST', formdata=data, cookies=cookies)
 			#yield  scrapy.FormRequest(self.authurl, callback=self.parse, method='POST', formdata=data, cookies=cookies)
 			#self.cookieJar.add_cookie_header(request) # apply Set-Cookie ourselves
 			self.STEP = 'END'
@@ -272,7 +273,9 @@ class JikeSpider(scrapy.Spider):
 
 		for link in links:
 			l = link['href']
-			l = l.replace('.', '_1.') + "?ss=1"
+			#l = l.replace('.', '_1.') + "?ss=1"
+			n = l.rfind('.')
+			l = l[:n] + "_1." + l[n+1:] + "?ss=1"
 			yield scrapy.Request(l,	self.parse_sub)
 
 	def parse_sub(self, response):

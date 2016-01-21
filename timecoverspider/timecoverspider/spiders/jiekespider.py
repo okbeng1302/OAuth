@@ -12,10 +12,13 @@ import qqlib
 
 from scrapy.http.cookies import CookieJar
 
+from bs4 import BeautifulSoup
+
 class JikeSpider(scrapy.Spider):
 	name = "jike-spider"
 	start_urls = ["http://passport.jikexueyuan.com/connect/qq"]
 	#start_urls = ["http://www.jikexueyuan.com"]
+	dest_url = "http://ke.jikexueyuan.com/zhiye/ios/"
 
 	STEP = 'INIT'
 	is_logined = 0
@@ -244,6 +247,9 @@ class JikeSpider(scrapy.Spider):
 		elif self.STEP == 'END':
 			g = response.body
 			print g
+
+			yield scrapy.Request(self.dest_url, self.parse_main)
+
 		else:
 			yield scrapy.Request(None, self.parse)
 			STEP = 'INIT'
@@ -259,18 +265,34 @@ class JikeSpider(scrapy.Spider):
 		#url = response.css("div.refineCol ul li").xpath("a[contains(., 'TIME U.S.')]")
 		#yield scrapy.Request(url.xpath("@href").extract_first(), self.parse_page)
 
-	def parse_page(self, response):
-		# loop over all cover link elements that link off to the large
-		# cover of the magazine and yield a request to grab the cove
-		# data and image
-		for href in response.xpath("//a[contains(., 'Large Cover')]"):
-			yield scrapy.Request(href.xpath("@href").extract_first(),
-				self.parse_covers)
+	def parse_main(self, response):
 
-		# extract the 'Next' link from the pagination, load it, and
-		# parse it
-		next = response.css("div.pages").xpath("a[contains(., 'Next')]")
-		yield scrapy.Request(next.xpath("@href").extract_first(), self.parse_page)
+		soup = BeautifulSoup(response.body, "lxml")
+		links = soup.find_all('a', class_="inner")
+
+		for link in links:
+			l = link['href']
+			l = l.replace('.', '_1.') + "?ss=1"
+			yield scrapy.Request(l,	self.parse_sub)
+
+	def parse_sub(self, response):
+
+		soup = BeautifulSoup(response.body, "lxml")
+		source = soup.find_all('source')
+		print source
+
+		lesson_box = soup.find_all('div', class_='text-box')
+		for l in lesson_box:
+			print l.h2.a['href']
+			#l = l.replace('.', '_1.') + "?ss=1"
+			#yield scrapy.Request(l,	self.parse_sub)
+
+	def parse_sub_to_idle(self, response):
+
+		soup = BeautifulSoup(response.body, "lxml")
+		source = soup.find_all('source')
+		print source
+
 
 	def parse_covers(self, response):
 		# grab the URL of the cover image

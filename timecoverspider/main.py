@@ -1,8 +1,8 @@
 from scrapy import cmdline 
 
-import sys
-reload(sys)
-sys.setdefaultencoding('gb18030')
+#import sys
+#reload(sys)
+#sys.setdefaultencoding('gb18030')
 
 #import qqlib
 #import re
@@ -15,3 +15,4 @@ sys.setdefaultencoding('gb18030')
 #qq.loginex()
 
 cmdline.execute('scrapy crawl jike-spider'.split())
+#cmdline.execute('scrapy crawl pyimagesearch-cover-spider'.split())

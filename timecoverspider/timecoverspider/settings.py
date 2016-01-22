@@ -64,7 +64,9 @@ USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
 #    'timecoverspider.pipelines.SomePipeline': 300,
-    'scrapy.contrib.pipeline.images.FilesPipeline':1,
+#    'scrapy.contrib.pipeline.images.FilesPipeline':1,
+     'scrapy.contrib.pipeline.files.FilesPipeline':1,
+#    'scrapy.downloadermiddlewares.redirect.RedirectMiddleware':600,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -85,5 +87,6 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR='httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES=[]
 #HTTPCACHE_STORAGE='scrapy.extensions.httpcache.FilesystemCacheStorage'
-FILES_STORE = "/home/bb/workspace/data"
+FILES_STORE = "/home/yaohongtao/workspace/data"
 
+#REDIRECT_ENABLED=False

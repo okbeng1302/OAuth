@@ -14,5 +14,5 @@ from scrapy import cmdline
 #p = qq.pwdencode('', 100, 1)
 #qq.loginex()
 
-cmdline.execute('scrapy crawl jike-spider'.split())
+cmdline.execute('scrapy crawl jike-spider -o video.json'.split())
 #cmdline.execute('scrapy crawl pyimagesearch-cover-spider'.split())

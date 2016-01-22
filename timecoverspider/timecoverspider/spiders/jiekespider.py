@@ -3,7 +3,7 @@
 
 # import the necessary packages
 import urllib
-from timecoverspider.items import MagazineCover
+from timecoverspider.items import *
 import datetime
 import scrapy
 import time
@@ -16,7 +16,8 @@ from bs4 import BeautifulSoup
 
 class JikeSpider(scrapy.Spider):
 	name = "jike-spider"
-	start_urls = ["http://passport.jikexueyuan.com/connect/qq"]
+	#start_urls = ["http://passport.jikexueyuan.com/connect/qq"]
+	start_urls = ["http://www.jikexueyuan.com"]
 	#start_urls = ["http://www.jikexueyuan.com"]
 	dest_url = "http://ke.jikexueyuan.com/zhiye/ios/"
 
@@ -31,7 +32,7 @@ class JikeSpider(scrapy.Spider):
 	state=''
 	client_id=101119675
 	#URL
-
+	jikeconurl='http://passport.jikexueyuan.com/connect/qq'
 	xloginurl='http://xui.ptlogin2.qq.com/cgi-bin/xlogin'
 	checkurl2='http://check.ptlogin2.qq.com/check'
 	loginjumpurl='http://openapi.qzone.qq.com/oauth/login_jump'
@@ -72,7 +73,13 @@ class JikeSpider(scrapy.Spider):
 
 	def parse(self, response):
 
+		#print self.STEP + " url:" + response.url
+
 		if self.STEP == 'INIT':
+			yield scrapy.Request(self.jikeconurl, self.parse)
+			self.STEP = 'CON'
+
+		if self.STEP == 'CON':
 			self.cookieJar = response.meta.setdefault('cookie_jar', CookieJar())
 			self.cookieJar.extract_cookies(response, response.request)
 			self.state = re.findall('&state=(.*?)\&', response.url)[0]
@@ -240,61 +247,80 @@ class JikeSpider(scrapy.Spider):
 				'skey': self.cookieJar._cookies['.qq.com']['/']['skey'].value,
 			}
 
-			yield  scrapy.FormRequest(self.authurl, meta = {'dont_redirect': True,'handle_httpstatus_list': [302]}, callback=self.parse, method='POST', formdata=data, cookies=cookies)
+			#yield  scrapy.FormRequest(self.authurl, meta = {'dont_redirect': True,'handle_httpstatus_list': [302]}, callback=self.parse, method='POST', formdata=data, cookies=cookies)
+			yield  scrapy.FormRequest(self.authurl, callback=self.parse, method='POST', formdata=data, cookies=cookies)
 			#yield  scrapy.FormRequest(self.authurl, callback=self.parse, method='POST', formdata=data, cookies=cookies)
 			#self.cookieJar.add_cookie_header(request) # apply Set-Cookie ourselves
 			self.STEP = 'END'
 
 		elif self.STEP == 'END':
-			g = response.body
-			print g
+			# g = response.body
+			# print g
 
+			# begin crap video source
 			yield scrapy.Request(self.dest_url, self.parse_main)
 
 		else:
 			yield scrapy.Request(None, self.parse)
 			STEP = 'INIT'
 
-		body = response.body
-		#print body
-		#if self.is_logined == 0:
-		#self._process_login( response)
-		#else:
-		#	yield scrapy.Request(None, self.parse_page)
-
-		# let's only gather Time U.S. magazine covers
-		#url = response.css("div.refineCol ul li").xpath("a[contains(., 'TIME U.S.')]")
-		#yield scrapy.Request(url.xpath("@href").extract_first(), self.parse_page)
-
 	def parse_main(self, response):
 
 		soup = BeautifulSoup(response.body, "lxml")
 		links = soup.find_all('a', class_="inner")
 
-		for link in links:
-			l = link['href']
-			#l = l.replace('.', '_1.') + "?ss=1"
-			n = l.rfind('.')
-			l = l[:n] + "_1." + l[n+1:] + "?ss=1"
-			yield scrapy.Request(l,	self.parse_sub)
+		l = links[1]['href']
+		#n = l.rfind('.')
+		#l = l[:n] + "_1." + l[n+1:] + "?ss=1"
+		yield scrapy.Request(l,	self.parse_sub)
+
+		# for link in links:
+		# 	l = link['href']
+		# 	#n = l.rfind('.')
+		# 	#l = l[:n] + "_1." + l[n+1:] + "?ss=1"
+		# 	yield scrapy.Request(l,	self.parse_sub)
 
 	def parse_sub(self, response):
 
+		g = response.body
+		print g
+
 		soup = BeautifulSoup(response.body, "lxml")
-		source = soup.find_all('source')
-		print source
 
 		lesson_box = soup.find_all('div', class_='text-box')
 		for l in lesson_box:
-			print l.h2.a['href']
-			#l = l.replace('.', '_1.') + "?ss=1"
-			#yield scrapy.Request(l,	self.parse_sub)
+			sub_l = l.h2.a['href']
+			yield scrapy.Request(sub_l,	self.parse_sub_to_idle)
 
 	def parse_sub_to_idle(self, response):
 
+		f_r = "00:00"
+		lesson = ""
+		unit = ""
+		file_urls = ""
 		soup = BeautifulSoup(response.body, "lxml")
+
+		lesson_box = soup.find_all('div', class_='text-box')
+		for l in lesson_box:
+			sub_l = l.h2.a['href']
+			print sub_l
+			if (response.url == sub_l):
+				unit = l.h2.a.string
+				f_r = l.p.string
+
 		source = soup.find_all('source')
-		print source
+		if len(source):
+			print source[0]['src']
+			file_urls = source[0]['src']
+
+		lesson_teacher = soup.find_all('div', class_='lesson-teacher')
+		if len(lesson_teacher) == 1:
+			lesson = lesson_teacher[0].div.h2.string
+			print lesson
+
+		if len(file_urls) and len(lesson):
+			# yield the result
+			yield LessonInfo(lesson=lesson, unit=unit, time=f_r, file_urls=[file_urls])
 
 
 	def parse_covers(self, response):

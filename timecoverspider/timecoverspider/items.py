@@ -15,3 +15,13 @@ class MagazineCover(scrapy.Item):
     pubDate = scrapy.Field()
     file_urls = scrapy.Field()
     files = scrapy.Field()
+
+
+class LessonInfo(scrapy.Item):
+    # define the fields for your item here like:
+    # name = scrapy.Field()
+    lesson = scrapy.Field()
+    unit = scrapy.Field()
+    time = scrapy.Field()
+    file_urls = scrapy.Field()
+    files = scrapy.Field()

@@ -24,7 +24,7 @@ class JikeSpider(scrapy.Spider):
 	STEP = 'INIT'
 	is_logined = 0
 	user = 909066038
-	pwd = 'woailiyao-521'
+	pwd = 'vlirqin'
 
 	#BASE INFO
 	appid=716027609
@@ -269,16 +269,13 @@ class JikeSpider(scrapy.Spider):
 		soup = BeautifulSoup(response.body, "lxml")
 		links = soup.find_all('a', class_="inner")
 
-		l = links[1]['href']
-		#n = l.rfind('.')
-		#l = l[:n] + "_1." + l[n+1:] + "?ss=1"
-		yield scrapy.Request(l,	self.parse_sub)
+		#for single test
+		#l = links[1]['href']
+		#yield scrapy.Request(l,	self.parse_sub)
 
-		# for link in links:
-		# 	l = link['href']
-		# 	#n = l.rfind('.')
-		# 	#l = l[:n] + "_1." + l[n+1:] + "?ss=1"
-		# 	yield scrapy.Request(l,	self.parse_sub)
+		for link in links:
+			l = link['href']
+			yield scrapy.Request(l,	self.parse_sub)
 
 	def parse_sub(self, response):
 
@@ -290,15 +287,16 @@ class JikeSpider(scrapy.Spider):
 		lesson_box = soup.find_all('div', class_='text-box')
 		for l in lesson_box:
 			sub_l = l.h2.a['href']
-			yield scrapy.Request(sub_l,	self.parse_sub_to_idle)
+			yield scrapy.Request(sub_l,	self.parse_sub_info)
 
-	def parse_sub_to_idle(self, response):
+	def parse_sub_info(self, response):
 
 		f_r = "00:00"
 		lesson = ""
 		unit = ""
 		file_urls = ""
 		soup = BeautifulSoup(response.body, "lxml")
+		id = ""
 
 		lesson_box = soup.find_all('div', class_='text-box')
 		for l in lesson_box:
@@ -307,6 +305,7 @@ class JikeSpider(scrapy.Spider):
 			if (response.url == sub_l):
 				unit = l.h2.a.string
 				f_r = l.p.string
+				break
 
 		source = soup.find_all('source')
 		if len(source):
@@ -317,6 +316,10 @@ class JikeSpider(scrapy.Spider):
 		if len(lesson_teacher) == 1:
 			lesson = lesson_teacher[0].div.h2.string
 			print lesson
+
+		id = re.findall("\_(.*)\.html", response.url)
+		if len(id):
+			unit = id[0] + unit
 
 		if len(file_urls) and len(lesson):
 			# yield the result

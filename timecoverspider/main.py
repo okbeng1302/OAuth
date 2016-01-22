@@ -1,4 +1,10 @@
 from scrapy import cmdline 
+import re
+
+# url = 'http://www.jikexueyuan.com/course/616_1.html?ss=1'
+#
+# ret = re.findall("\_(.*)\.html", url)
+# print len(ret)
 
 #import sys
 #reload(sys)
